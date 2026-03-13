@@ -1,17 +1,15 @@
-// Master movie list with all categories
 const movies = [
-  // ================= EXISTING MOVIES =================
   {
     id: 1,
     title: "Dora the Explorer",
-    category: ["trending", "hero", "cartoons"],
+    category: ["trending", "hero", "cartoons", "movies"],
     genre: "Adventure / Family",
     subtitle: "¡Vámonos! Let's go on an adventure with Dora and Boots!",
     description:
       "Join Dora, a young explorer, and her monkey Boots on exciting adventures through the rainforest as they solve puzzles, overcome obstacles, and teach Spanish words along the way.",
-    image: require("../assets/images/cartoons/dora.jpg"),
-    backdrop: require("../assets/images/backdrops/cartoons/dora-backdrop.jpg"),
-    videoPreview: require("../assets/videos/cartoons/dora-preview.mp4"),
+    image: require("../assets/images/backdrops/movies/dora-backdrop.jpg"),
+    backdrop: require("../assets/images/backdrops/movies/dora-backdrop.jpg"),
+    videoPreview: require("../assets/videos/movies/dora-preview.mp4"),
     rating: "8.2",
     year: "2023",
     duration: "24min per episode",
@@ -27,7 +25,7 @@ const movies = [
     subtitle: "The game will find you. And it will never let you go.",
     description:
       "Four teenagers are sucked into a magical video game, and the only way to escape is to work together to finish the game. But everything changes when they discover that Jumanji is more than just a game.",
-    image: require("../assets/images/movies/jumanji.jpg"),
+    image: require("../assets/images/backdrops/movies/jumanji-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/jumanji-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/jumanji-preview.mp4"),
     rating: "8.5",
@@ -35,7 +33,7 @@ const movies = [
     duration: "2h 3min",
     cast: ["Dwayne Johnson", "Kevin Hart", "Jack Black", "Karen Gillan"],
     director: "Jake Kasdan",
-    language: ["English", "Hindi", "Spanish"],
+    language: ["English"],
   },
   {
     id: 3,
@@ -45,7 +43,7 @@ const movies = [
     subtitle: "The hunt begins. The hunter becomes the hunted.",
     description:
       "Sergei Kravinoff, a big-game hunter, seeks to prove himself as the world's greatest hunter after a mysterious event gives him superhuman abilities. His journey puts him on a collision course with some of the most dangerous individuals.",
-    image: require("../assets/images/movies/kraven.jpg"),
+    image: require("../assets/images/backdrops/movies/kraven-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/kraven-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/kraven-preview.mp4"),
     rating: "7.8",
@@ -63,7 +61,7 @@ const movies = [
     subtitle: "The world's leaders. One target. No escape.",
     description:
       "When the G20 summit comes under attack from a hostile terrorist organization, U.S. President Danielle Sutton must use her military and political expertise to save her family, fellow leaders, and the world.",
-    image: require("../assets/images/movies/g20.jpg"),
+    image: require("../assets/images/backdrops/movies/g20-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/g20-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/g20-preview.mp4"),
     rating: "8.0",
@@ -81,7 +79,7 @@ const movies = [
     subtitle: "Fight for the throne. Die for the crown.",
     description:
       "In a kingdom ravaged by war and political intrigue, a young prince must rise above betrayal and conspiracy to claim his rightful throne and unite his people against a common enemy.",
-    image: require("../assets/images/movies/kingdom.jpg"),
+    image: require("../assets/images/backdrops/movies/kingdom-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/kingdom-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/kingdom-preview.mp4"),
     rating: "8.7",
@@ -89,7 +87,7 @@ const movies = [
     duration: "2h 22min",
     cast: ["TBA"],
     director: "TBA",
-    language: ["English", "Japanese"],
+    language: ["English"],
   },
   {
     id: 6,
@@ -99,7 +97,7 @@ const movies = [
     subtitle: "One detective. One city. Total chaos.",
     description:
       "After a botched drug deal, a detective must fight his way through the criminal underworld to rescue a politician's estranged son while uncovering a web of corruption that goes to the highest levels.",
-    image: require("../assets/images/movies/havoc.jpg"),
+    image: require("../assets/images/backdrops/movies/havoc-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/havoc-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/havoc-preview.mp4"),
     rating: "7.9",
@@ -117,7 +115,7 @@ const movies = [
     subtitle: "A ten-year journey. A lifetime of legend.",
     description:
       "A modern retelling of Homer's classic epic, following a warrior's decade-long journey home after the Trojan War, facing mythical creatures and divine challenges while his family fights to survive in his absence.",
-    image: require("../assets/images/movies/odyssey.jpg"),
+    image: require("../assets/images/backdrops/movies/odyssey-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/odyssey-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/odyssey-preview.mp4"),
     rating: "8.3",
@@ -135,7 +133,7 @@ const movies = [
     subtitle: "Fear is the mind-killer. Only the fearless survive.",
     description:
       "Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, must travel to the most dangerous planet in the universe to ensure the future of his family and his people.",
-    image: require("../assets/images/movies/dune.jpg"),
+    image: require("../assets/images/backdrops/movies/dune-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/dune-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/dune-preview.mp4"),
     rating: "8.9",
@@ -153,7 +151,7 @@ const movies = [
     subtitle: "A new kind of vampire rises.",
     description:
       "Biochemist Michael Morbius tries to cure himself of a rare blood disease, but when his experiment goes wrong, he inadvertently infects himself with a form of vampirism instead.",
-    image: require("../assets/images/movies/morbius.jpg"),
+    image: require("../assets/images/backdrops/movies/morbius-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/morbius-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/morbius-preview.mp4"),
     rating: "7.5",
@@ -171,7 +169,7 @@ const movies = [
     subtitle: "Put on a happy face.",
     description:
       "In Gotham City, mentally troubled comedian Arthur Fleck is disregarded and mistreated by society. He then embarks on a downward spiral of revolution and bloody crime. This path brings him face-to-face with his alter-ego: the Joker.",
-    image: require("../assets/images/movies/joker.jpg"),
+    image: require("../assets/images/backdrops/movies/joker-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/joker-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/joker-preview.mp4"),
     rating: "8.8",
@@ -191,7 +189,7 @@ const movies = [
     subtitle: "Love, betrayal, and the power of the mystical bird.",
     description:
       "After an encounter with a mystical bird, a man gains the power to bring people back from the dead, which leads him on a journey of love, greed, and betrayal in ancient Yoruba land.",
-    image: require("../assets/images/movies/anikulapo.jpg"),
+    image: require("../assets/images/backdrops/movies/anikulapo-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/anikulapo-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/anikulapo-preview.mp4"),
     rating: "8.4",
@@ -209,7 +207,7 @@ const movies = [
     subtitle: "One warrior. One boy. One dangerous journey.",
     description:
       "A mighty warrior and a young boy search for enlightenment in a ruthless territory controlled by barons. Set in a post-apocalyptic world, this martial arts epic follows their journey through the Badlands.",
-    image: require("../assets/images/movies/into-the-badlands.jpg"),
+    image: require("../assets/images/backdrops/movies/into-the-badlands-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/into-the-badlands-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/into-the-badlands-preview.mp4"),
     rating: "8.2",
@@ -227,7 +225,7 @@ const movies = [
     subtitle: "I am Spartacus. And I will be free.",
     description:
       "The life of the legendary Thracian gladiator Spartacus, who led a massive slave rebellion against the Roman Republic. The series follows his journey from slave to gladiator to revolutionary leader.",
-    image: require("../assets/images/movies/spartacus.jpg"),
+    image: require("../assets/images/backdrops/movies/spartacus-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/spartacus-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/spartacus-preview.mp4"),
     rating: "8.5",
@@ -245,7 +243,7 @@ const movies = [
     subtitle: "One phone call changed everything.",
     description:
       "A low-level FBI agent who works in the basement of the White House answers a phone call that thrusts him into a fast-moving conspiracy involving a spy traitor and a potential attack on the White House.",
-    image: require("../assets/images/movies/the-night-agent.jpg"),
+    image: require("../assets/images/backdrops/movies/night-agent-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/night-agent-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/night-agent-preview.mp4"),
     rating: "8.1",
@@ -263,7 +261,7 @@ const movies = [
     subtitle: "The monster hunter. The destiny he cannot escape.",
     description:
       "Geralt of Rivia, a mutated monster hunter, struggles to find his place in a world where people often prove more wicked than beasts. Based on the best-selling book series.",
-    image: require("../assets/images/movies/the-witcher.jpg"),
+    image: require("../assets/images/backdrops/movies/witcher-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/movies/witcher-backdrop.jpg"),
     videoPreview: require("../assets/videos/movies/witcher-preview.mp4"),
     rating: "8.2",
@@ -283,7 +281,7 @@ const movies = [
     subtitle: "The queen returns. The renaissance begins.",
     description:
       "Experience Beyoncé's spectacular Renaissance World Tour, featuring performances of her greatest hits including 'Halo,' 'Crazy in Love,' and songs from her Grammy-winning album 'Renaissance.'",
-    image: require("../assets/images/music/beyonce.jpg"),
+    image: require("../assets/images/backdrops/music/beyonce-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/music/beyonce-backdrop.jpg"),
     videoPreview: require("../assets/videos/music/beyonce-preview.mp4"),
     rating: "9.2",
@@ -301,7 +299,7 @@ const movies = [
     subtitle: "A journey through the cosmos. A night to remember.",
     description:
       "Join Coldplay on their breathtaking Music of the Spheres World Tour, featuring stunning visuals and performances of 'Hymn for the Weekend,' 'Viva La Vida,' 'Fix You,' and more.",
-    image: require("../assets/images/music/coldplay.jpg"),
+    image: require("../assets/images/backdrops/music/coldplay-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/music/coldplay-backdrop.jpg"),
     videoPreview: require("../assets/videos/music/coldplay-preview.mp4"),
     rating: "8.9",
@@ -319,7 +317,7 @@ const movies = [
     subtitle: "The perfect night of music with Ed Sheeran.",
     description:
       "Ed Sheeran performs live on his Mathematics Tour, featuring intimate acoustic versions of his biggest hits including 'Perfect,' 'Shape of You,' 'Thinking Out Loud,' and songs from his latest albums.",
-    image: require("../assets/images/music/edsheeran.jpg"),
+    image: require("../assets/images/backdrops/music/edsheeran-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/music/edsheeran-backdrop.jpg"),
     videoPreview: require("../assets/videos/music/edsheeran-preview.mp4"),
     rating: "8.7",
@@ -337,7 +335,7 @@ const movies = [
     subtitle: "Nigeria's finest. The voice of the streets.",
     description:
       "Nigerian hip-hop sensation Odumodublvck performs his greatest hits including 'Dog Eat Dog,' 'Declan Rice,' and 'Picanto' in this electrifying concert experience.",
-    image: require("../assets/images/music/odumodu.jpg"),
+    image: require("../assets/images/backdrops/music/odumodu-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/music/odumodu-backdrop.jpg"),
     videoPreview: require("../assets/videos/music/odumodu-preview.mp4"),
     rating: "8.5",
@@ -355,7 +353,7 @@ const movies = [
     subtitle: "Every era. Every song. Every memory.",
     description:
       "Taylor Swift's record-breaking Eras Tour comes to life in this spectacular concert film, featuring performances from all her musical eras including 'Love Story,' 'Shake It Off,' 'All Too Well,' and more.",
-    image: require("../assets/images/music/taylor.jpg"),
+    image: require("../assets/images/backdrops/music/taylor-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/music/taylor-backdrop.jpg"),
     videoPreview: require("../assets/videos/music/taylor-preview.mp4"),
     rating: "9.5",
@@ -375,7 +373,7 @@ const movies = [
     subtitle: "For real life? Magic awaits!",
     description:
       "Bluey follows the adventures of a lovable and inexhaustible six-year-old Blue Heeler puppy who lives with her dad, mum, and little sister Bingo. Using her limitless energy and imagination, Bluey plays games that unfold in unpredictable and hilarious ways.",
-    image: require("../assets/images/cartoons/bluey.jpg"),
+    image: require("../assets/images/backdrops/cartoons/bluey-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/cartoons/bluey-backdrop.jpg"),
     videoPreview: require("../assets/videos/cartoons/bluey-preview.mp4"),
     rating: "9.0",
@@ -393,7 +391,7 @@ const movies = [
     subtitle: "Science. Magic. Chaos. Adventures.",
     description:
       "An animated series that follows the exploits of a super scientist and his not-so-bright grandson, Rick Sanchez and Morty Smith, as they travel through dimensions and alternate realities.",
-    image: require("../assets/images/cartoons/rickmorty.jpg"),
+    image: require("../assets/images/backdrops/cartoons/rickmorty-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/cartoons/rickmorty-backdrop.jpg"),
     videoPreview: require("../assets/videos/cartoons/rickmorty-preview.mp4"),
     rating: "9.1",
@@ -411,7 +409,7 @@ const movies = [
     subtitle: "The longest-running family in animation history.",
     description:
       "The Simpsons is an animated sitcom about the everyday life of the Simpson family in the town of Springfield. Homer, Marge, Bart, Lisa, and Maggie navigate life with humor and heart.",
-    image: require("../assets/images/cartoons/simpsons.jpg"),
+    image: require("../assets/images/backdrops/cartoons/simpsons-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/cartoons/simpsons-backdrop.jpg"),
     videoPreview: require("../assets/videos/cartoons/simpsons-preview.mp4"),
     rating: "8.5",
@@ -429,7 +427,7 @@ const movies = [
     subtitle: "More than one mask. More than one universe.",
     description:
       "Miles Morales returns for an epic multi-verse adventure where he teams up with Gwen Stacy and a new team of Spider-People to face a powerful villain. A stunning visual masterpiece of animation.",
-    image: require("../assets/images/cartoons/spiderverse.jpg"),
+    image: require("../assets/images/backdrops/cartoons/spiderverse-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/cartoons/spiderverse-backdrop.jpg"),
     videoPreview: require("../assets/videos/cartoons/spiderverse-preview.mp4"),
     rating: "9.2",
@@ -449,7 +447,7 @@ const movies = [
     subtitle: "The hidden world of forest deer revealed.",
     description:
       "Explore the hidden world of deer living in forests around the world. This documentary follows their seasonal patterns, mating rituals, and survival strategies against predators.",
-    image: require("../assets/images/discovery/deers.jpg"),
+    image: require("../assets/images/backdrops/discovery/deers-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/deers-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/deers-preview.mp4"),
     rating: "8.2",
@@ -467,7 +465,7 @@ const movies = [
     subtitle: "Life on thin ice.",
     description:
       "This epic documentary series explores the frozen wilderness of the Arctic and Antarctic, showcasing the incredible wildlife and breathtaking landscapes of the polar regions.",
-    image: require("../assets/images/discovery/frozenplanet.jpg"),
+    image: require("../assets/images/backdrops/discovery/frozenplanet-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/frozenplanet-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/frozenplanet-preview.mp4"),
     rating: "9.3",
@@ -485,7 +483,7 @@ const movies = [
     subtitle: "Close encounters with the gentle giants.",
     description:
       "Journey into the misty mountains of Rwanda and Uganda to observe the critically endangered mountain gorillas. This documentary captures intimate moments with these gentle giants.",
-    image: require("../assets/images/discovery/gorillas.jpg"),
+    image: require("../assets/images/backdrops/discovery/gorillas-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/gorillas-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/gorillas-preview.mp4"),
     rating: "8.9",
@@ -503,7 +501,7 @@ const movies = [
     subtitle: "Life at the top of the world.",
     description:
       "Explore the world's greatest mountain ranges and discover the unique wildlife that has adapted to survive in these harsh, high-altitude environments.",
-    image: require("../assets/images/discovery/in-the-mountains.jpg"),
+    image: require("../assets/images/backdrops/discovery/mountains-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/mountains-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/mountains-preview.mp4"),
     rating: "8.0",
@@ -521,7 +519,7 @@ const movies = [
     subtitle: "The epic story of our cosmos.",
     description:
       "From the Big Bang to the formation of galaxies and planets, this documentary explores the epic story of our universe and humanity's place within it.",
-    image: require("../assets/images/discovery/ouruniverse.jpg"),
+    image: require("../assets/images/backdrops/discovery/ouruniverse-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/ouruniverse-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/ouruniverse-preview.mp4"),
     rating: "8.7",
@@ -539,7 +537,7 @@ const movies = [
     subtitle: "The ultimate nature documentary returns.",
     description:
       "The third installment of the groundbreaking Planet Earth series takes viewers on a journey to new frontiers, showcasing the planet's most extraordinary wildlife and habitats.",
-    image: require("../assets/images/discovery/planetearth.jpg"),
+    image: require("../assets/images/backdrops/discovery/planetearth-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/planetearth-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/planetearth-preview.mp4"),
     rating: "9.4",
@@ -551,15 +549,15 @@ const movies = [
   },
   {
     id: 31,
-    title: "Sea Lions",
+    title: "Sea Horses",
     category: ["discovery", "nature"],
     genre: "Wildlife / Documentary",
-    subtitle: "The playful acrobats of the ocean.",
+    subtitle: "The unique creatures of the ocean.",
     description:
-      "Dive into the world of sea lions, from the coasts of California to the Galapagos Islands. This documentary follows their playful antics, hunting techniques, and social behaviors.",
-    image: require("../assets/images/discovery/sealions.jpg"),
-    backdrop: require("../assets/images/backdrops/discovery/sealions-backdrop.jpg"),
-    videoPreview: require("../assets/videos/discovery/sealions-preview.mp4"),
+      "Dive into the world of sea horses, from the coasts of California to the Galapagos Islands. This documentary follows their playful antics, hunting techniques, and social behaviors.",
+    image: require("../assets/images/backdrops/discovery/seahorses-backdrop.jpg"),
+    backdrop: require("../assets/images/backdrops/discovery/seahorses-backdrop.jpg"),
+    videoPreview: require("../assets/videos/discovery/seahorses-preview.mp4"),
     rating: "8.1",
     year: "2021",
     duration: "45min",
@@ -575,7 +573,7 @@ const movies = [
     subtitle: "The ancient mariners' incredible journey.",
     description:
       "Follow the incredible journey of sea turtles as they travel thousands of miles across oceans, return to the beaches where they were born, and face numerous threats along the way.",
-    image: require("../assets/images/discovery/seatortise.jpg"),
+    image: require("../assets/images/backdrops/discovery/seatortise-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/seatortise-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/seatortise-preview.mp4"),
     rating: "8.3",
@@ -593,7 +591,7 @@ const movies = [
     subtitle: "Exploring the last frontier on Earth.",
     description:
       "Embark on a journey through the world's oceans, from sunlit surface waters to the darkest depths, and meet the extraordinary creatures that call these waters home.",
-    image: require("../assets/images/discovery/the-ocean.jpg"),
+    image: require("../assets/images/backdrops/discovery/theocean-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/theocean-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/theocean-preview.mp4"),
     rating: "8.6",
@@ -605,13 +603,13 @@ const movies = [
   },
   {
     id: 34,
-    title: "The Sea",
+    title: "The Difference between The Sea and The Ocean",
     category: ["discovery", "nature"],
     genre: "Ocean / Documentary",
-    subtitle: "Life beneath the waves revealed.",
+    subtitle: "The difference revealed.",
     description:
-      "Discover the incredible biodiversity of our seas and oceans, from colorful coral reefs to mysterious deep-sea creatures, and the delicate balance that sustains marine life.",
-    image: require("../assets/images/discovery/the-sea.jpg"),
+      "Discover the incredible differences between our seas and oceans.",
+    image: require("../assets/images/backdrops/discovery/thesea-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/thesea-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/thesea-preview.mp4"),
     rating: "8.4",
@@ -629,7 +627,7 @@ const movies = [
     subtitle: "The majestic predators of the Indian jungle.",
     description:
       "Enter the world of the Bengal tiger in the forests of India. This documentary captures intimate moments with these magnificent predators and the conservation efforts to protect them.",
-    image: require("../assets/images/discovery/tigers.jpg"),
+    image: require("../assets/images/backdrops/discovery/tigers-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/tigers-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/tigers-preview.mp4"),
     rating: "9.0",
@@ -647,7 +645,7 @@ const movies = [
     subtitle: "Nature's most breathtaking spectacles.",
     description:
       "Visit the most spectacular waterfalls on Earth, from Niagara to Victoria Falls, and explore the geology, ecology, and cultural significance of these natural wonders.",
-    image: require("../assets/images/discovery/waterfalls.jpg"),
+    image: require("../assets/images/backdrops/discovery/waterfalls-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/waterfalls-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/waterfalls-preview.mp4"),
     rating: "8.2",
@@ -665,7 +663,7 @@ const movies = [
     subtitle: "The legend of the wolf pack.",
     description:
       "Follow a wolf pack through the seasons in the frozen north. This documentary reveals the complex social structure, hunting strategies, and family bonds that define these magnificent animals.",
-    image: require("../assets/images/discovery/wolves.jpg"),
+    image: require("../assets/images/backdrops/discovery/wolves-backdrop.jpg"),
     backdrop: require("../assets/images/backdrops/discovery/wolves-backdrop.jpg"),
     videoPreview: require("../assets/videos/discovery/wolves-preview.mp4"),
     rating: "8.5",
