@@ -15,8 +15,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import UserMenu from "../components/UserMenu"; // Fixed import path
+import UserMenu from "../components/UserMenu";
 import { music, popular, trending } from "../data/entertainmentData";
+import { addToMyList } from "../utils/myListUtils";
 
 const { width, height } = Dimensions.get("window");
 
@@ -67,6 +68,14 @@ export default function Music() {
     outputRange: [1, 0.8, 0.95],
     extrapolate: "clamp",
   });
+
+  // Navigation functions for "See All" buttons
+  const navigateToCategory = (category, title) => {
+    router.push({
+      pathname: "/category",
+      params: { category, title },
+    });
+  };
 
   const renderMusicCard = ({ item, index }) => (
     <TouchableOpacity
@@ -245,12 +254,11 @@ export default function Music() {
                   <Text style={styles.playButtonText}>Listen Now</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.shareButton}>
-                  <Ionicons
-                    name="share-social-outline"
-                    size={20}
-                    color="#fff"
-                  />
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => addToMyList(featuredMusic, router)}
+                >
+                  <Ionicons name="add" size={24} color="#fff" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -276,7 +284,9 @@ export default function Music() {
               <Ionicons name="musical-notes" size={20} color="#1DB954" />
               <Text style={styles.sectionTitle}>All Concerts</Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => navigateToCategory("music", "All Music")}
+            >
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -301,10 +311,11 @@ export default function Music() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="flame" size={20} color="#1DB954" />
-                <Text style={styles.sectionTitle}>Trending Now 🔥</Text>
+                <Text style={styles.sectionTitle}>🔥 Trending Now</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("trending", "Trending Music")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -325,10 +336,11 @@ export default function Music() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="heart" size={20} color="#1DB954" />
-                <Text style={styles.sectionTitle}>Popular Artists ⭐</Text>
+                <Text style={styles.sectionTitle}>⭐ Popular Artists</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("popular", "Popular Music")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -351,7 +363,11 @@ export default function Music() {
               <Ionicons name="time" size={20} color="#1DB954" />
               <Text style={styles.sectionTitle}>Recently Added</Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() =>
+                navigateToCategory("recent", "Recently Added Music")
+              }
+            >
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -508,7 +524,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  shareButton: {
+  addButton: {
     width: 48,
     height: 48,
     borderRadius: 24,

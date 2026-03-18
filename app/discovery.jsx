@@ -15,8 +15,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import UserMenu from "../components/UserMenu"; // Fixed import path
+import UserMenu from "../components/UserMenu";
 import { discovery, popular, trending } from "../data/entertainmentData";
+import { addToMyList } from "../utils/myListUtils";
 
 const { width, height } = Dimensions.get("window");
 
@@ -122,6 +123,14 @@ export default function Discovery() {
     outputRange: [1, 0.8, 0.95],
     extrapolate: "clamp",
   });
+
+  // Navigation functions for "See All" buttons
+  const navigateToCategory = (category, title) => {
+    router.push({
+      pathname: "/category",
+      params: { category, title },
+    });
+  };
 
   const renderDiscoveryCard = ({ item, index }) => (
     <TouchableOpacity
@@ -261,8 +270,11 @@ export default function Discovery() {
             <Text style={styles.playButtonText}>Watch Now</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.saveButton}>
-            <Ionicons name="bookmark-outline" size={20} color="#fff" />
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => addToMyList(featuredDiscovery, router)}
+          >
+            <Ionicons name="add" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -335,7 +347,14 @@ export default function Discovery() {
                 Documentaries
               </Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() =>
+                navigateToCategory(
+                  selectedCategory,
+                  `${selectedCategory === "all" ? "All" : selectedCategory} Documentaries`,
+                )
+              }
+            >
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -363,7 +382,11 @@ export default function Discovery() {
                 <Ionicons name="paw" size={20} color="#FFB347" />
                 <Text style={styles.sectionTitle}>🐾 Wildlife & Nature</Text>
               </View>
-              <TouchableOpacity onPress={() => setSelectedCategory("wildlife")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("wildlife", "Wildlife Documentaries")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -386,7 +409,11 @@ export default function Discovery() {
                 <Ionicons name="water" size={20} color="#FFB347" />
                 <Text style={styles.sectionTitle}>🌊 Oceans & Marine Life</Text>
               </View>
-              <TouchableOpacity onPress={() => setSelectedCategory("ocean")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("ocean", "Ocean Documentaries")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -409,7 +436,11 @@ export default function Discovery() {
                 <Ionicons name="planet" size={20} color="#FFB347" />
                 <Text style={styles.sectionTitle}>🚀 Space & Universe</Text>
               </View>
-              <TouchableOpacity onPress={() => setSelectedCategory("space")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("space", "Space Documentaries")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -432,7 +463,11 @@ export default function Discovery() {
                 <Ionicons name="flame" size={20} color="#FFB347" />
                 <Text style={styles.sectionTitle}>🔥 Trending Now</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("trending", "Trending Documentaries")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -455,7 +490,11 @@ export default function Discovery() {
                 <Ionicons name="heart" size={20} color="#FFB347" />
                 <Text style={styles.sectionTitle}>⭐ Popular Picks</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("popular", "Popular Documentaries")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -612,7 +651,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  saveButton: {
+  addButton: {
     width: 48,
     height: 48,
     borderRadius: 24,

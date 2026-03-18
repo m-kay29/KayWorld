@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -38,7 +39,6 @@ export default function ProfileScreen() {
         setUsername(storedUser);
         setIsAdmin(token === "admin_logged_in");
 
-        // Find user email from accounts
         if (accountsData) {
           const accounts = JSON.parse(accountsData);
           const user = accounts.find((acc) => acc.username === storedUser);
@@ -89,13 +89,7 @@ export default function ProfileScreen() {
       screen: "/profile-settings",
     },
     { icon: "heart-outline", label: "My List", screen: "/my-list" },
-    { icon: "download-outline", label: "Downloads", screen: "/downloads" },
-    { icon: "time-outline", label: "Watch History", screen: "/watch-history" },
-    {
-      icon: "notifications-outline",
-      label: "Notifications",
-      screen: "/notifications",
-    },
+    { icon: "download-outline", label: "Downloads", screen: "/download" },
     {
       icon: "help-circle-outline",
       label: "Help & Support",
@@ -148,24 +142,6 @@ export default function ProfileScreen() {
           </View>
           <Text style={styles.memberSince}>Member since {memberSince}</Text>
         </LinearGradient>
-
-        {/* Stats Section */}
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>Movies</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>Music</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>Cartoons</Text>
-          </View>
-        </View>
 
         {/* Menu Items */}
         <View style={styles.menuContainer}>
@@ -275,34 +251,6 @@ const styles = StyleSheet.create({
   memberSince: {
     color: "rgba(255,255,255,0.6)",
     fontSize: 12,
-  },
-  // Stats
-  statsContainer: {
-    flexDirection: "row",
-    backgroundColor: "#1a1a1a",
-    marginHorizontal: 16,
-    marginBottom: 16,
-    borderRadius: 12,
-    padding: 16,
-  },
-  statItem: {
-    flex: 1,
-    alignItems: "center",
-  },
-  statNumber: {
-    color: "#E50914",
-    fontSize: 20,
-    fontWeight: "700",
-    marginBottom: 4,
-  },
-  statLabel: {
-    color: "#888",
-    fontSize: 12,
-  },
-  statDivider: {
-    width: 1,
-    height: "100%",
-    backgroundColor: "#333",
   },
   // Menu
   menuContainer: {

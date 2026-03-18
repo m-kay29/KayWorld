@@ -1,85 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
-    Alert,
-    Dimensions,
-    FlatList,
-    Image,
-    Platform,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserMenu from "../components/UserMenu";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 // Storage key for my list
 const MY_LIST_STORAGE_KEY = "user_my_list";
-
-// Mock data for demonstration (in a real app, this would come from your data files)
-const MOCK_CONTENT = [
-  {
-    id: "1",
-    title: "Dune: Part Two",
-    image: require("../assets/images/backdrops/movies/dune-backdrop.jpg"),
-    rating: "8.9",
-    year: "2024",
-    genre: "Sci-Fi / Adventure",
-    type: "movie",
-  },
-  {
-    id: "2",
-    title: "Beyoncé: Renaissance",
-    image: require("../assets/images/backdrops/music/beyonce-backdrop.jpg"),
-    rating: "9.2",
-    year: "2023",
-    genre: "Concert / Music",
-    type: "music",
-  },
-  {
-    id: "3",
-    title: "Rick & Morty",
-    image: require("../assets/images/backdrops/cartoons/rickmorty-backdrop.jpg"),
-    rating: "9.1",
-    year: "2023",
-    genre: "Animation / Sci-Fi",
-    type: "cartoon",
-  },
-  {
-    id: "4",
-    title: "Planet Earth III",
-    image: require("../assets/images/backdrops/discovery/planetearth-backdrop.jpg"),
-    rating: "9.4",
-    year: "2023",
-    genre: "Nature / Documentary",
-    type: "discovery",
-  },
-  {
-    id: "5",
-    title: "Joker",
-    image: require("../assets/images/backdrops/movies/joker-backdrop.jpg"),
-    rating: "8.8",
-    year: "2019",
-    genre: "Drama / Crime",
-    type: "movie",
-  },
-  {
-    id: "6",
-    title: "Coldplay: Music of Spheres",
-    image: require("../assets/images/backdrops/music/coldplay-backdrop.jpg"),
-    rating: "8.9",
-    year: "2022",
-    genre: "Concert / Rock",
-    type: "music",
-  },
-];
 
 export default function MyList() {
   const router = useRouter();
@@ -89,28 +32,26 @@ export default function MyList() {
   const [editing, setEditing] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  useEffect(() => {
-    loadMyList();
-  }, []);
+  // Load the list whenever the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      loadMyList();
+    }, []),
+  );
 
   const loadMyList = async () => {
     setLoading(true);
     try {
       const storedList = await SecureStore.getItemAsync(MY_LIST_STORAGE_KEY);
+      console.log("Raw stored list:", storedList); // Debug log
+
       if (storedList) {
-        setMyList(JSON.parse(storedList));
+        const parsedList = JSON.parse(storedList);
+        console.log("Parsed list:", parsedList); // Debug log
+        setMyList(parsedList);
       } else {
-        // For demo purposes, add some mock items to my list
-        // In a real app, this would be empty initially
-        const initialList = MOCK_CONTENT.slice(0, 3).map((item) => ({
-          ...item,
-          dateAdded: new Date().toISOString(),
-        }));
-        setMyList(initialList);
-        await SecureStore.setItemAsync(
-          MY_LIST_STORAGE_KEY,
-          JSON.stringify(initialList),
-        );
+        console.log("No stored list found - starting empty"); // Debug log
+        setMyList([]);
       }
     } catch (error) {
       console.error("Error loading my list:", error);
@@ -336,6 +277,14 @@ export default function MyList() {
 
   const filteredList = getFilteredList();
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
@@ -357,40 +306,42 @@ export default function MyList() {
         </SafeAreaView>
       </LinearGradient>
 
-      {/* Category Filter */}
-      <View style={styles.categoryContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.categoryList}>
-            {categories.map((cat) => (
-              <TouchableOpacity
-                key={cat.id}
-                style={[
-                  styles.categoryChip,
-                  selectedCategory === cat.id && styles.categoryChipActive,
-                ]}
-                onPress={() => setSelectedCategory(cat.id)}
-              >
-                <Ionicons
-                  name={cat.icon}
-                  size={14}
-                  color={selectedCategory === cat.id ? "#fff" : "#E50914"}
-                />
-                <Text
+      {/* Category Filter - Only show if list has items */}
+      {myList.length > 0 && (
+        <View style={styles.categoryContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.categoryList}>
+              {categories.map((cat) => (
+                <TouchableOpacity
+                  key={cat.id}
                   style={[
-                    styles.categoryChipText,
-                    selectedCategory === cat.id &&
-                      styles.categoryChipTextActive,
+                    styles.categoryChip,
+                    selectedCategory === cat.id && styles.categoryChipActive,
                   ]}
+                  onPress={() => setSelectedCategory(cat.id)}
                 >
-                  {cat.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+                  <Ionicons
+                    name={cat.icon}
+                    size={14}
+                    color={selectedCategory === cat.id ? "#fff" : "#E50914"}
+                  />
+                  <Text
+                    style={[
+                      styles.categoryChipText,
+                      selectedCategory === cat.id &&
+                        styles.categoryChipTextActive,
+                    ]}
+                  >
+                    {cat.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      )}
 
-      {/* Edit Button */}
+      {/* Edit Button - Only show if list has items */}
       {filteredList.length > 0 && !editing && (
         <View style={styles.editButtonContainer}>
           <TouchableOpacity onPress={() => setEditing(true)}>
@@ -450,6 +401,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    color: "#fff",
+    fontSize: 16,
   },
   header: {
     paddingTop: 0,

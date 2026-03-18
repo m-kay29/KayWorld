@@ -17,6 +17,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserMenu from "../components/UserMenu";
 import { moviesCategory, popular, trending } from "../data/entertainmentData";
+import { addToMyList } from "../utils/myListUtils";
 
 const { width, height } = Dimensions.get("window");
 
@@ -76,6 +77,14 @@ export default function Movies() {
     outputRange: [1, 0.8, 0.95],
     extrapolate: "clamp",
   });
+
+  // Navigation functions for "See All" buttons
+  const navigateToCategory = (category, title) => {
+    router.push({
+      pathname: "/category",
+      params: { category, title },
+    });
+  };
 
   const renderMovieCard = ({ item, index }) => (
     <TouchableOpacity
@@ -204,7 +213,10 @@ export default function Movies() {
             <Text style={styles.playButtonText}>Watch Now</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.shareButton}>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => addToMyList(heroMovie, router)}
+          >
             <Ionicons name="add" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -274,7 +286,9 @@ export default function Movies() {
               <Ionicons name="film" size={20} color="#E50914" />
               <Text style={styles.sectionTitle}>All Movies</Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => navigateToCategory("movies", "All Movies")}
+            >
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -302,7 +316,9 @@ export default function Movies() {
                 <Ionicons name="flash" size={20} color="#E50914" />
                 <Text style={styles.sectionTitle}>Action Movies</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("action", "Action Movies")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -323,10 +339,13 @@ export default function Movies() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="flame" size={20} color="#E50914" />
                 <Text style={styles.sectionTitle}>🔥 Trending Now</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("trending", "Trending Movies")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -347,10 +366,11 @@ export default function Movies() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="heart" size={20} color="#E50914" />
                 <Text style={styles.sectionTitle}>⭐ Popular Picks</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("popular", "Popular Movies")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -373,7 +393,9 @@ export default function Movies() {
               <Ionicons name="time" size={20} color="#E50914" />
               <Text style={styles.sectionTitle}>Recently Added</Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => navigateToCategory("recent", "Recently Added")}
+            >
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -530,7 +552,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  shareButton: {
+  addButton: {
     width: 48,
     height: 48,
     borderRadius: 24,

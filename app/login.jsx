@@ -319,13 +319,6 @@ export default function Login() {
               </View>
             </View>
 
-            {/* Demo Credentials Hint */}
-            <View style={styles.demoContainer}>
-              <Text style={styles.demoTitle}>Demo Credentials:</Text>
-              <Text style={styles.demoText}>Admin: admin / admin123</Text>
-              <Text style={styles.demoText}>User: user / password123</Text>
-            </View>
-
             {/* Decorative Elements */}
             <View style={styles.decorativeCircle1} />
             <View style={styles.decorativeCircle2} />

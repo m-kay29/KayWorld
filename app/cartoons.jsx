@@ -15,8 +15,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import UserMenu from "../components/UserMenu"; // Fixed import path
+import UserMenu from "../components/UserMenu";
 import { cartoons, popular, trending } from "../data/entertainmentData";
+import { addToMyList } from "../utils/myListUtils";
 
 const { width, height } = Dimensions.get("window");
 
@@ -104,6 +105,14 @@ export default function Cartoons() {
     outputRange: [1, 0.8, 0.95],
     extrapolate: "clamp",
   });
+
+  // Navigation functions for "See All" buttons
+  const navigateToCategory = (category, title) => {
+    router.push({
+      pathname: "/category",
+      params: { category, title },
+    });
+  };
 
   const renderCartoonCard = ({ item, index }) => (
     <TouchableOpacity
@@ -273,8 +282,11 @@ export default function Cartoons() {
             <Text style={styles.playButtonText}>Watch Now</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.favoriteButton}>
-            <Ionicons name="heart-outline" size={20} color="#fff" />
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => addToMyList(featuredCartoon, router)}
+          >
+            <Ionicons name="add" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -347,7 +359,14 @@ export default function Cartoons() {
                 Cartoons
               </Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() =>
+                navigateToCategory(
+                  "cartoons",
+                  `${selectedAgeGroup === "all" ? "All" : selectedAgeGroup} Cartoons`,
+                )
+              }
+            >
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -372,10 +391,11 @@ export default function Cartoons() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="happy" size={20} color="#4ECDC4" />
                 <Text style={styles.sectionTitle}>🧸 Kids Corner (3-7)</Text>
               </View>
-              <TouchableOpacity onPress={() => setSelectedAgeGroup("kids")}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("kids", "Kids Cartoons")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -395,10 +415,11 @@ export default function Cartoons() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="people" size={20} color="#FFD93D" />
                 <Text style={styles.sectionTitle}>👪 Family Favorites</Text>
               </View>
-              <TouchableOpacity onPress={() => setSelectedAgeGroup("family")}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("family", "Family Cartoons")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -418,10 +439,11 @@ export default function Cartoons() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="rocket" size={20} color="#6C5CE7" />
                 <Text style={styles.sectionTitle}>🚀 Teen Zone (13+)</Text>
               </View>
-              <TouchableOpacity onPress={() => setSelectedAgeGroup("teen")}>
+              <TouchableOpacity
+                onPress={() => navigateToCategory("teen", "Teen Cartoons")}
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -441,10 +463,13 @@ export default function Cartoons() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="flame" size={20} color="#FF6B6B" />
                 <Text style={styles.sectionTitle}>🔥 Trending Now</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("trending", "Trending Cartoons")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -464,10 +489,13 @@ export default function Cartoons() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons name="heart" size={20} color="#FF6B6B" />
                 <Text style={styles.sectionTitle}>⭐ Fan Favorites</Text>
               </View>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigateToCategory("popular", "Popular Cartoons")
+                }
+              >
                 <Text style={styles.seeAll}>See All</Text>
               </TouchableOpacity>
             </View>
@@ -624,7 +652,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  favoriteButton: {
+  addButton: {
     width: 48,
     height: 48,
     borderRadius: 24,

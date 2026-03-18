@@ -4,10 +4,12 @@ import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function UserMenu() {
@@ -51,7 +53,7 @@ export default function UserMenu() {
     <View style={styles.profileContainer}>
       <TouchableOpacity
         style={styles.profileButton}
-        onPress={() => setDropdownVisible(!dropdownVisible)}
+        onPress={() => setDropdownVisible(true)}
         activeOpacity={0.7}
       >
         <LinearGradient
@@ -62,83 +64,89 @@ export default function UserMenu() {
         </LinearGradient>
       </TouchableOpacity>
 
-      {/* Dropdown Menu */}
-      {dropdownVisible && (
-        <>
-          <TouchableOpacity
-            style={styles.dropdownBackdrop}
-            activeOpacity={1}
-            onPress={() => setDropdownVisible(false)}
-          />
-          <View style={styles.dropdown}>
-            <View style={styles.dropdownHeader}>
-              <LinearGradient
-                colors={["#E50914", "#990000"]}
-                style={styles.dropdownAvatar}
-              >
-                <Text style={styles.dropdownAvatarText}>{userInitial}</Text>
-              </LinearGradient>
-              <View style={styles.dropdownUserInfo}>
-                <Text style={styles.dropdownUsername}>{username}</Text>
-                <Text style={styles.dropdownEmail}>
-                  {username === "Guest" ? "Not signed in" : "Member"}
-                </Text>
+      {/* Dropdown Menu using Modal*/}
+      <Modal
+        visible={dropdownVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setDropdownVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalBackdrop}
+          activeOpacity={1}
+          onPress={() => setDropdownVisible(false)}
+        >
+          <View style={styles.dropdownContainer}>
+            <View style={styles.dropdown}>
+              <View style={styles.dropdownHeader}>
+                <LinearGradient
+                  colors={["#E50914", "#990000"]}
+                  style={styles.dropdownAvatar}
+                >
+                  <Text style={styles.dropdownAvatarText}>{userInitial}</Text>
+                </LinearGradient>
+                <View style={styles.dropdownUserInfo}>
+                  <Text style={styles.dropdownUsername}>{username}</Text>
+                  <Text style={styles.dropdownEmail}>
+                    {username === "Guest" ? "Not signed in" : "Member"}
+                  </Text>
+                </View>
               </View>
+
+              <View style={styles.dropdownDivider} />
+
+              {/* Profile Link */}
+              <TouchableOpacity
+                style={styles.dropdownItem}
+                onPress={() => handleNavigation("/profile")}
+              >
+                <Ionicons name="person-outline" size={18} color="#E50914" />
+                <Text style={styles.dropdownItemText}>Profile</Text>
+              </TouchableOpacity>
+
+              {/* My List Link */}
+              <TouchableOpacity
+                style={styles.dropdownItem}
+                onPress={() => handleNavigation("/my-list")}
+              >
+                <Ionicons name="heart-outline" size={18} color="#E50914" />
+                <Text style={styles.dropdownItemText}>My List</Text>
+              </TouchableOpacity>
+
+              {/* Downloads Link */}
+              <TouchableOpacity
+                style={styles.dropdownItem}
+                onPress={() => handleNavigation("/download")}
+              >
+                <Ionicons name="download-outline" size={18} color="#E50914" />
+                <Text style={styles.dropdownItemText}>Downloads</Text>
+              </TouchableOpacity>
+
+              {/* Settings Link */}
+              <TouchableOpacity
+                style={styles.dropdownItem}
+                onPress={() => handleNavigation("/profile-settings")}
+              >
+                <Ionicons name="settings-outline" size={18} color="#E50914" />
+                <Text style={styles.dropdownItemText}>Settings</Text>
+              </TouchableOpacity>
+
+              <View style={styles.dropdownDivider} />
+
+              {/* Logout/Sign In Link */}
+              <TouchableOpacity
+                style={[styles.dropdownItem, styles.logoutItem]}
+                onPress={handleLogout}
+              >
+                <Ionicons name="log-out-outline" size={18} color="#ff4444" />
+                <Text style={[styles.dropdownItemText, styles.logoutText]}>
+                  {username === "Guest" ? "Sign In" : "Logout"}
+                </Text>
+              </TouchableOpacity>
             </View>
-
-            <View style={styles.dropdownDivider} />
-
-            {/* Profile Link */}
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => handleNavigation("/profile")}
-            >
-              <Ionicons name="person-outline" size={18} color="#E50914" />
-              <Text style={styles.dropdownItemText}>Profile</Text>
-            </TouchableOpacity>
-
-            {/* My List Link */}
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => handleNavigation("/my-list")}
-            >
-              <Ionicons name="heart-outline" size={18} color="#E50914" />
-              <Text style={styles.dropdownItemText}>My List</Text>
-            </TouchableOpacity>
-
-            {/* Downloads Link */}
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => handleNavigation("/download")}
-            >
-              <Ionicons name="download-outline" size={18} color="#E50914" />
-              <Text style={styles.dropdownItemText}>Downloads</Text>
-            </TouchableOpacity>
-
-            {/* Settings Link */}
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => handleNavigation("/profile-settings")}
-            >
-              <Ionicons name="settings-outline" size={18} color="#E50914" />
-              <Text style={styles.dropdownItemText}>Settings</Text>
-            </TouchableOpacity>
-
-            <View style={styles.dropdownDivider} />
-
-            {/* Logout/Sign In Link */}
-            <TouchableOpacity
-              style={[styles.dropdownItem, styles.logoutItem]}
-              onPress={handleLogout}
-            >
-              <Ionicons name="log-out-outline" size={18} color="#ff4444" />
-              <Text style={[styles.dropdownItemText, styles.logoutText]}>
-                {username === "Guest" ? "Sign In" : "Logout"}
-              </Text>
-            </TouchableOpacity>
           </View>
-        </>
-      )}
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -146,7 +154,6 @@ export default function UserMenu() {
 const styles = StyleSheet.create({
   profileContainer: {
     position: "relative",
-    zIndex: 2000,
   },
   profileButton: {
     width: 40,
@@ -166,31 +173,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  dropdownBackdrop: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "transparent",
-    zIndex: 1999,
+  // Modal backdrop
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  dropdown: {
+  dropdownContainer: {
     position: "absolute",
-    top: 50,
-    right: 0,
+    top: Platform.OS === "ios" ? 110 : 100,
+    right: 16,
     width: 220,
-    backgroundColor: "#1a1a1a",
     borderRadius: 12,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#333",
-    zIndex: 3000,
+    overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
+  },
+  dropdown: {
+    backgroundColor: "#1a1a1a",
+    borderRadius: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#333",
   },
   dropdownHeader: {
     flexDirection: "row",

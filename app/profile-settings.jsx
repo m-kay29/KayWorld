@@ -4,16 +4,16 @@ import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    Dimensions,
-    Platform,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  Dimensions,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserMenu from "../components/UserMenu";
@@ -28,13 +28,11 @@ export default function ProfileSettings() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-  const [downloadOverWifi, setDownloadOverWifi] = useState(true);
-  const [autoPlay, setAutoPlay] = useState(true);
-  const [subtitles, setSubtitles] = useState(true);
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
 
   useEffect(() => {
     loadUserData();
@@ -75,7 +73,6 @@ export default function ProfileSettings() {
         let accounts = JSON.parse(accountsData);
         const currentUser = await SecureStore.getItemAsync("username");
 
-        // Update user data
         accounts = accounts.map((acc) => {
           if (acc.username === currentUser) {
             return { ...acc, username, email };
@@ -85,7 +82,6 @@ export default function ProfileSettings() {
 
         await SecureStore.setItemAsync("accounts", JSON.stringify(accounts));
 
-        // Update stored username if changed
         if (username !== currentUser) {
           await SecureStore.setItemAsync("username", username);
         }
@@ -93,7 +89,6 @@ export default function ProfileSettings() {
         Alert.alert("Success", "Profile updated successfully");
       }
     } catch (error) {
-      console.error("Error saving profile:", error);
       Alert.alert("Error", "Failed to update profile");
     } finally {
       setIsLoading(false);
@@ -129,14 +124,12 @@ export default function ProfileSettings() {
         );
 
         if (userIndex !== -1) {
-          // Verify current password (in a real app, this would be hashed)
           if (accounts[userIndex].password !== currentPassword) {
             Alert.alert("Error", "Current password is incorrect");
             setIsLoading(false);
             return;
           }
 
-          // Update password
           accounts[userIndex].password = newPassword;
           await SecureStore.setItemAsync("accounts", JSON.stringify(accounts));
 
@@ -147,35 +140,16 @@ export default function ProfileSettings() {
         }
       }
     } catch (error) {
-      console.error("Error changing password:", error);
       Alert.alert("Error", "Failed to change password");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleClearHistory = () => {
-    Alert.alert(
-      "Clear Watch History",
-      "Are you sure you want to clear your watch history? This action cannot be undone.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Clear",
-          style: "destructive",
-          onPress: () => {
-            // Implement clear history logic
-            Alert.alert("Success", "Watch history cleared");
-          },
-        },
-      ],
-    );
-  };
-
   const handleDeleteAccount = () => {
     Alert.alert(
       "Delete Account",
-      "Are you sure you want to delete your account? All your data will be permanently removed.",
+      "Are you sure you want to delete your account? This action cannot be undone.",
       [
         { text: "Cancel", style: "cancel" },
         {
@@ -200,7 +174,7 @@ export default function ProfileSettings() {
                 router.replace("/welcome");
               }
             } catch (error) {
-              console.error("Error deleting account:", error);
+              Alert.alert("Error", "Failed to delete account");
             }
           },
         },
@@ -208,19 +182,9 @@ export default function ProfileSettings() {
     );
   };
 
-  const SettingSwitch = ({ value, onValueChange, label }) => (
-    <TouchableOpacity
-      style={styles.settingRow}
-      onPress={() => onValueChange(!value)}
-    >
-      <Text style={styles.settingLabel}>{label}</Text>
-      <View style={[styles.switch, value && styles.switchActive]}>
-        <View
-          style={[styles.switchCircle, value && styles.switchCircleActive]}
-        />
-      </View>
-    </TouchableOpacity>
-  );
+  const togglePasswordVisibility = (field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
 
   return (
     <View style={styles.container}>
@@ -294,7 +258,9 @@ export default function ProfileSettings() {
               colors={["#E50914", "#990000"]}
               style={styles.saveButtonGradient}
             >
-              <Text style={styles.saveButtonText}>Save Changes</Text>
+              <Text style={styles.saveButtonText}>
+                {isLoading ? "Saving..." : "Save Changes"}
+              </Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -314,15 +280,15 @@ export default function ProfileSettings() {
               style={styles.input}
               placeholder="Current Password"
               placeholderTextColor="#666"
-              secureTextEntry={!showCurrentPassword}
+              secureTextEntry={!showPassword.current}
               value={currentPassword}
               onChangeText={setCurrentPassword}
             />
             <TouchableOpacity
-              onPress={() => setShowCurrentPassword(!showCurrentPassword)}
+              onPress={() => togglePasswordVisibility("current")}
             >
               <Ionicons
-                name={showCurrentPassword ? "eye-off-outline" : "eye-outline"}
+                name={showPassword.current ? "eye-off-outline" : "eye-outline"}
                 size={20}
                 color="#666"
               />
@@ -340,15 +306,13 @@ export default function ProfileSettings() {
               style={styles.input}
               placeholder="New Password"
               placeholderTextColor="#666"
-              secureTextEntry={!showNewPassword}
+              secureTextEntry={!showPassword.new}
               value={newPassword}
               onChangeText={setNewPassword}
             />
-            <TouchableOpacity
-              onPress={() => setShowNewPassword(!showNewPassword)}
-            >
+            <TouchableOpacity onPress={() => togglePasswordVisibility("new")}>
               <Ionicons
-                name={showNewPassword ? "eye-off-outline" : "eye-outline"}
+                name={showPassword.new ? "eye-off-outline" : "eye-outline"}
                 size={20}
                 color="#666"
               />
@@ -366,15 +330,15 @@ export default function ProfileSettings() {
               style={styles.input}
               placeholder="Confirm New Password"
               placeholderTextColor="#666"
-              secureTextEntry={!showConfirmPassword}
+              secureTextEntry={!showPassword.confirm}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
             <TouchableOpacity
-              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              onPress={() => togglePasswordVisibility("confirm")}
             >
               <Ionicons
-                name={showConfirmPassword ? "eye-off-outline" : "eye-outline"}
+                name={showPassword.confirm ? "eye-off-outline" : "eye-outline"}
                 size={20}
                 color="#666"
               />
@@ -386,162 +350,9 @@ export default function ProfileSettings() {
             onPress={handleChangePassword}
             disabled={isLoading}
           >
-            <Text style={styles.changePasswordText}>Update Password</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Preferences Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
-
-          <SettingSwitch
-            label="Push Notifications"
-            value={notifications}
-            onValueChange={setNotifications}
-          />
-
-          <SettingSwitch
-            label="Download over Wi-Fi only"
-            value={downloadOverWifi}
-            onValueChange={setDownloadOverWifi}
-          />
-
-          <SettingSwitch
-            label="Auto-play previews"
-            value={autoPlay}
-            onValueChange={setAutoPlay}
-          />
-
-          <SettingSwitch
-            label="Subtitles by default"
-            value={subtitles}
-            onValueChange={setSubtitles}
-          />
-        </View>
-
-        {/* Content Settings */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Content</Text>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="language-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Language Preferences</Text>
-            </View>
-            <Text style={styles.menuItemValue}>English</Text>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons
-                name="closed-captioning-outline"
-                size={20}
-                color="#E50914"
-              />
-              <Text style={styles.menuItemText}>Subtitle Settings</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="videocam-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Video Quality</Text>
-            </View>
-            <Text style={styles.menuItemValue}>Auto</Text>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons
-                name="musical-notes-outline"
-                size={20}
-                color="#E50914"
-              />
-              <Text style={styles.menuItemText}>Audio Quality</Text>
-            </View>
-            <Text style={styles.menuItemValue}>High</Text>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Privacy Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Privacy</Text>
-
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={handleClearHistory}
-          >
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="time-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Clear Watch History</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="download-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Clear Downloads</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="search-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Clear Search History</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Support Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Support</Text>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="help-circle-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Help Center</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons
-                name="document-text-outline"
-                size={20}
-                color="#E50914"
-              />
-              <Text style={styles.menuItemText}>Terms of Service</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons name="shield-outline" size={20} color="#E50914" />
-              <Text style={styles.menuItemText}>Privacy Policy</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <View style={styles.menuItemLeft}>
-              <Ionicons
-                name="information-circle-outline"
-                size={20}
-                color="#E50914"
-              />
-              <Text style={styles.menuItemText}>About</Text>
-            </View>
-            <Text style={styles.menuItemValue}>Version 1.0.0</Text>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
+            <Text style={styles.changePasswordText}>
+              {isLoading ? "Updating..." : "Update Password"}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -597,7 +408,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  // Sections
   section: {
     marginTop: 24,
     paddingHorizontal: 16,
@@ -608,7 +418,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 16,
   },
-  // Input Fields
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -656,67 +465,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "500",
   },
-  // Settings
-  settingRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#1a1a1a",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  settingLabel: {
-    color: "#fff",
-    fontSize: 15,
-  },
-  switch: {
-    width: 48,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "#333",
-    padding: 2,
-  },
-  switchActive: {
-    backgroundColor: "#E50914",
-  },
-  switchCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-  },
-  switchCircleActive: {
-    transform: [{ translateX: 24 }],
-  },
-  // Menu Items
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#1a1a1a",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  menuItemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    flex: 1,
-  },
-  menuItemText: {
-    color: "#fff",
-    fontSize: 15,
-  },
-  menuItemValue: {
-    color: "#888",
-    fontSize: 14,
-    marginRight: 8,
-  },
-  // Danger Zone
   dangerZone: {
     borderTopWidth: 1,
     borderTopColor: "#333",
